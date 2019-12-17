@@ -132,7 +132,7 @@ char* ht_search(ht_hash_table* ht, const char* key) {
     while (item != NULL) {
         if (item != &HT_DELETED_ITEM) { 
             if (strcmp(item->key, key) == 0) {
-                return item->value;
+                return item->key;
             }
         }
         index = ht_get_hash(key, ht->size, i);
