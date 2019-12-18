@@ -12,10 +12,9 @@
 
 static ht_item HT_DELETED_ITEM = {NULL, NULL};
 
-static ht_item* ht_new_item(const char* k, const char* v) {
+static ht_item* ht_new_item(const char* k) {
     ht_item* i = malloc(sizeof(ht_item));
     i->key = strdup(k);
-    i->value = strdup(v);
     return i;
 }
 
@@ -36,7 +35,6 @@ ht_hash_table* ht_new() {
 
 static void ht_del_item(ht_item* i) {
     free(i->key);
-    free(i->value);
     free(i);
 }
 
@@ -77,7 +75,7 @@ static void ht_resize(ht_hash_table* ht, const int base_size) {
     for (int i = 0; i < ht->size; i++) {
         ht_item* item = ht->items[i];
         if (item != NULL && item != &HT_DELETED_ITEM) {
-            ht_insert(new_ht, item->key, item->value);
+            ht_insert(new_ht, item->key);
         }
     }
 
@@ -106,13 +104,13 @@ static void ht_resize_down(ht_hash_table* ht) {
     ht_resize(ht, new_size);
 }
 
-void ht_insert(ht_hash_table* ht, const char* key, const char* value) {
+void ht_insert(ht_hash_table* ht, const char* key) {
 	const int load = ht->count * 100 / ht->size;
 	if (load > 70) {
         ht_resize_up(ht);
     }
     
-    ht_item* item = ht_new_item(key, value);
+    ht_item* item = ht_new_item(key);
     int index = ht_get_hash(item->key, ht->size, 0);
     ht_item* cur_item = ht->items[index];
     int i = 1;

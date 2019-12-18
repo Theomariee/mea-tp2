@@ -19,7 +19,7 @@ int main() {
 
     currentLine = NULL;
     while (getline(&currentLine, &len, sortReads) != -1) {
-        ht_insert(ht, currentLine, "");
+        ht_insert(ht, currentLine);
     }
 
     fclose(sortReads);
